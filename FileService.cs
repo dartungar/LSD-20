@@ -31,7 +31,9 @@ namespace LSD_20
             {
                 jsonifiedObjects += JsonConvert.SerializeObject(o) + ",";
             }
-
+            // убираем запятую после последней записи
+            jsonifiedObjects.Remove(jsonifiedObjects.Length - 1);
+            // добавляем синтаксис массива
             return $"[{jsonifiedObjects}]"; 
         }
     }

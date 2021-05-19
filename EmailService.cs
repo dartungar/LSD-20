@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Collections.Generic;
 using MailKit.Net.Smtp;
@@ -20,11 +19,13 @@ namespace LSD_20
         string Password { get; set; }
         string ServiceName { get; set; }
         string ServiceEmailAddress { get; set; }
-        
-        // Адресаты
-        public List<string> EmailReceivers { get; set; }
 
-  
+        // Адресаты
+        public List<string> EmailReceivers { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Конструктор по умолчанию - инициализирует настройки из App.config
+        /// </summary>
         public EmailService()
         {
             ConfigFromAppConfig();
@@ -32,7 +33,9 @@ namespace LSD_20
 
 
 
-        // Инициализация настроек из App.config
+        /// <summary>
+        /// Инициализация настроек из App.config
+        /// </summary>
         public void ConfigFromAppConfig()
         {
             try
@@ -48,11 +51,15 @@ namespace LSD_20
             }
             catch (Exception)
             {
-                throw;
+                throw new Exception("Ошибка установки настроек из файла конфигурации. Проверьте App.config");
             }
         }
 
-        // Отправка электронного письма, содержащего plain text 
+        /// <summary>
+        /// Отправка электронного письма, содержащего plain text 
+        /// </summary>
+        /// <param name="messageText">Текст сообщения</param>
+        /// <param name="useAuth">Используется ли авторизация по логину и паролю</param>
         public void SendTextMessage(string messageText, bool useAuth)
         {
             // Создание и наполнение сообщения
