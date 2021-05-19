@@ -19,6 +19,7 @@ namespace LSD_20
             // Получаем через консоль список пользователей для поиска
             var searchTerms = ConsoleService.GetSearchTermsFromConsole();
 
+
             // выполняем поиск
             List<User> results = User.GetUsersFilteredByUsernames(searchTerms);
             Console.WriteLine(results.Count);
