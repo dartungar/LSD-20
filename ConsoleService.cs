@@ -25,7 +25,7 @@ namespace LSD_20
                     string[] separated = input.Split(',', StringSplitOptions.TrimEntries);
                     return separated.ToList();
                 }
-                else if (input.Contains(' ') || input.Contains(';') || input.Contains('.') || input.Contains('\t') || input.Contains('\n'))
+                else if (input.Contains(';') || input.Contains('.') || input.Contains('\t') || input.Contains('\n'))
                 {
                     Console.WriteLine("Пожалуйста, используйте запятую для разделения пользователей в списке.");
                     continue;
