@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bogus;
  
 
@@ -10,19 +8,28 @@ namespace LSD_20
 {
     public enum Sex{
       Male,
-      Famale,
-      Other // just kidding
+      Female
     }
 
+    /// <summary>
+    /// Содержит модель пользователя, статический список пользователей 
+    /// и метод для наполнения этого списка случайно сгенерированными данными
+    /// </summary>
     public class User {
+        // Статический список пользователей
         public static List<User> Users { get; set; }
-
 
         public int Id {get;set;}
         public string Username {get;set;}
         public DateTime Birthday {get;set;}
         public Sex Sex {get;set;}
 
+
+        /// <summary>
+        /// Инициализирует статический список пользователей,
+        /// наполняя его случайно сгенерированными данными.
+        /// </summary>
+        /// <param name="numOfUsers">Число пользователей в созданном списке</param>
         public static void GenerateFakeUsers(int numOfUsers)
         {
             var fakeUserGenerator = new Faker<User>(locale: "ru")
@@ -33,6 +40,20 @@ namespace LSD_20
 
             Users = fakeUserGenerator.Generate(numOfUsers).ToList();
         }
+
+        /// <summary>
+        /// Возвращает копию списка Users, 
+        /// где User.Username совпадает с одним из переданных в метод usernames
+        /// </summary>
+        /// <param name="terms">Список строк - username, испольуемых для поиска</param>
+        /// <returns>Отфильтрованный список пользователей</returns>
+        public static List<User> GetUsersFilteredByUsernames(List<string> usernames)
+        {
+            var results = Users.Where(u => usernames.Contains(u.Username)).ToList();
+            return results;
+
+        }
+
 
         public override string ToString()
         {

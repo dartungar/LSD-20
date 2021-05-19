@@ -1,57 +1,38 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Configuration;
-using System.Collections.Specialized;
 using System.Collections.Generic;
-using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
 
 namespace LSD_20
 {
+    /// <summary>
+    /// Функционал и настройки, связанные с отправкой e-mail.
+    /// А также получение адресатов от пользователя через консоль
+    /// </summary>
     class EmailService
     {
-
+        // конфигурация сервиса отправки сообщения 
         string Host { get; set; }
-        int Port { get; set; } = 587;
+        int Port { get; set; } = 587; // порт SMTP по умолчанию
         string Login { get; set; }
         string Password { get; set; }
         string ServiceName { get; set; }
         string ServiceEmailAddress { get; set; }
-
+        
+        // Адресаты
         public List<string> EmailReceivers { get; set; }
 
+  
         public EmailService()
         {
             ConfigFromAppConfig();
         }
 
-        public void GetEmailFromConsole()
-        {
-            
-            Console.WriteLine("Введите адрес электронной почты:\n");
-            while (true)
-            {
-                string email = Console.ReadLine();
-                if (ValidateEmail(email))
-                {
-                    if (EmailReceivers == null) EmailReceivers = new List<string>();
-                    EmailReceivers.Add(email);
-                    break;
-                }
-                Console.WriteLine("Неверный формат адреса электронной почты. Попробуйте еще раз:\n");
-            }
 
-        }
 
-        public static bool ValidateEmail(string email)
-        {
-            Regex regex = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
-            return regex.IsMatch(email);
-        }
-
-        // check if there is valid e-mail server configuration
-    
+        // Инициализация настроек из App.config
         public void ConfigFromAppConfig()
         {
             try
@@ -63,7 +44,7 @@ namespace LSD_20
                 Password = ConfigurationManager.AppSettings.Get("Password");
                 ServiceName = ConfigurationManager.AppSettings.Get("ServiceName");
                 ServiceEmailAddress = ConfigurationManager.AppSettings.Get("ServiceEmailAddress");
-                // TODO: если конфиг пустой или неполный, выдавать ошибку
+                // TODO: обрабатывать кейсы, когда App.config пустой / не хватает настроек
             }
             catch (Exception)
             {
@@ -71,8 +52,10 @@ namespace LSD_20
             }
         }
 
+        // Отправка электронного письма, содержащего plain text 
         public void SendTextMessage(string messageText, bool useAuth)
         {
+            // Создание и наполнение сообщения
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(ServiceName, ServiceEmailAddress));
             foreach (string address in EmailReceivers)
@@ -86,7 +69,7 @@ namespace LSD_20
                 Text = @messageText
             };
             
-            
+            // Инициализация почтового клиента и отправка письма
             using var client = new SmtpClient();
             client.Connect(Host, Port);
             if (useAuth)
