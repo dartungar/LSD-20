@@ -9,7 +9,7 @@ namespace LSD_20
     /// <summary>
     /// Функции для работы с файлами и подготовки данных к записи в файл
     /// </summary>
-    class FileService
+    static class FileService
     {
         public static void WriteTextToFile(string path, string text)
         {
@@ -25,16 +25,8 @@ namespace LSD_20
         /// <returns>Возвращает строку сериализованных объектов в формате массива JSON ( [ { }, { } ] )</returns>
         public static string ListOfObjectsToJsonString<T>(List<T> listOfObjects) where T: class
         {
-            string jsonifiedObjects = "";
-
-            foreach (var o in listOfObjects)
-            {
-                jsonifiedObjects += JsonConvert.SerializeObject(o) + ",";
-            }
-            // убираем запятую после последней записи
-            jsonifiedObjects.Remove(jsonifiedObjects.Length - 1);
-            // добавляем синтаксис массива
-            return $"[{jsonifiedObjects}]"; 
+            string jsonifiedObjects = JsonConvert.SerializeObject(listOfObjects);
+            return jsonifiedObjects; 
         }
     }
 }

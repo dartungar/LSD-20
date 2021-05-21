@@ -8,7 +8,7 @@ namespace LSD_20
     /// <summary>
     /// Функции для взаимодействия с пользователем через консоль
     /// </summary>
-    class ConsoleService
+    static class ConsoleService
     {
         /// <summary>
         /// Получение и проверка "поискового запроса" от пользователя через консоль
@@ -64,7 +64,7 @@ namespace LSD_20
         /// </summary>
         /// <param name="email">Строка для валидации на соответствие формату e-mail</param>
         /// <returns>Признак успеха валидации</returns>
-        public static bool ValidateEmail(string email)
+        private static bool ValidateEmail(string email)
         {
             Regex regex = new(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
             return regex.IsMatch(email);

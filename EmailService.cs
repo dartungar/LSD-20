@@ -36,7 +36,7 @@ namespace LSD_20
         /// <summary>
         /// Инициализация настроек из App.config
         /// </summary>
-        public void ConfigFromAppConfig()
+        private void ConfigFromAppConfig()
         {
             try
             {

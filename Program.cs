@@ -9,19 +9,20 @@ namespace LSD_20
         static void Main(string[] args)
         {
             // Наполняем список пользователей - нашу "БД" для будущего поиска
-            User.GenerateFakeUsers(20);
-            Console.WriteLine(User.Users[0]);
-            Console.WriteLine(User.Users[1]);
-            Console.WriteLine(User.Users[2]);
-            Console.WriteLine(User.Users[3]);
-            Console.WriteLine(User.Users[4]);
+            UsersData data = new UsersData();
+            data.Data = UsersDataGenerator.GenerateFakeUsers(20);
+            Console.WriteLine(data.Data[0]);
+            Console.WriteLine(data.Data[1]);
+            Console.WriteLine(data.Data[2]);
+            Console.WriteLine(data.Data[3]);
+            Console.WriteLine(data.Data[4]);
 
             // Получаем через консоль список пользователей для поиска
             var searchTerms = ConsoleService.GetSearchTermsFromConsole();
 
 
             // выполняем поиск
-            List<User> results = User.GetUsersFilteredByUsernames(searchTerms);
+            List<User> results = data.GetUsersFilteredByUsernames(searchTerms);
             Console.WriteLine(results.Count);
 
             // сериализуем результаты поиска
@@ -47,10 +48,10 @@ namespace LSD_20
                     emailService.SendTextMessage(resultsJsonified, false);
                     Console.WriteLine("Результаты отправлены по электронной почте.");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
 
-                    throw new Exception("Ошибка при отправке сообщения");
+                    throw new Exception($"Ошибка при отправке сообщения: {e.Message}");
                 }
             }   
 
